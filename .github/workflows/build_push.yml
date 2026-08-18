@@ -84,7 +84,7 @@ jobs:
 
       - name: Upload APKs (${{ matrix.chunk.number }})
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
-        if: "github.repository == 'beer-psi/tachiyomi-unofficial-extensions'"
+        if: "github.repository == 'Vanh1805/tachiyomi-unoff-extensions'"
         with:
           name: "individual-apks-${{ matrix.chunk.number }}"
           path: "**/*.apk"
@@ -96,7 +96,7 @@ jobs:
   publish:
     name: Publish extension repo
     needs: [ prepare, build ]
-    if: "github.repository == 'beer-psi/tachiyomi-unofficial-extensions'"
+    if: "github.repository == 'Vanh1805/tachiyomi-unoff-extensions'"
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -127,10 +127,10 @@ jobs:
           java -jar ./Inspector.jar "repo/apk" "output.json" "tmp"
           python ./.github/scripts/create-repo.py
 
-      - name: Checkout repo branch
+     - name: Checkout repo branch
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          repository: beer-psi/tachiyomi-unofficial-extensions
+          repository: ${{ github.repository }}
           ref: repo
           path: repo
           persist-credentials: true
