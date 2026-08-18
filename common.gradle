@@ -15,7 +15,7 @@ if (theme != null) evaluationDependsOn(theme.path)
 android {
     compileSdk = AndroidConfig.compileSdk
 
-    namespace "io.github.beerpsi.tachiyomi.extension"
+    namespace = "io.github.beerpsi.tachiyomi.extension"
 
     sourceSets {
         main {

@@ -50,6 +50,30 @@ class CuuTruyen :
     override val client = network.client.newBuilder()
         .addInterceptor(CuuTruyenImageInterceptor())
         .addInterceptor(::thumbnailIntercept)
+        .addInterceptor { chain ->
+            val request = chain.request()
+            val url = request.url
+            
+            if (url.host.contains("lrclib.net") || url.host.contains("storage-ct")) {
+                val newUrl = url.newBuilder()
+                    .host("storage-charlie.cuutruyen.net")
+                    .build()
+                return@addInterceptor chain.proceed(request.newBuilder().url(newUrl).build())
+            }
+
+            if (url.encodedPath.contains("/api/")) {
+                val cacheBustedUrl = url.newBuilder()
+                    .addQueryParameter("t", System.currentTimeMillis().toString())
+                    .build()
+                val newRequest = request.newBuilder()
+                    .url(cacheBustedUrl)
+                    .header("Cache-Control", "no-cache")
+                    .build()
+                return@addInterceptor chain.proceed(newRequest)
+            }
+
+            chain.proceed(request)
+        }
         .rateLimit(permits = 3)
         .build()
 
@@ -281,7 +305,7 @@ private const val TITLE_CACHE_LOAD_FACTOR = 0.7F
 private const val DOMAIN_PREF_KEY = "domain"
 private const val DEFAULT_DOMAIN = "cuutruyen.net"
 private const val DOMAIN_TITLE = "Tên miền"
-private val DOMAINS = arrayOf("cuutruyen.net", "nettrom.com", "hetcuutruyen.net", "cuutruyen5c844.site")
+private val DOMAINS = arrayOf("cuutruyen.net", "hetcuutruyen.net")
 
 private class TagFilter(val tags: List<Tag>) :
     Filter.Select<String>(
