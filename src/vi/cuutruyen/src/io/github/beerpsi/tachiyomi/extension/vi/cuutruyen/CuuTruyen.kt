@@ -53,7 +53,7 @@ class CuuTruyen :
         .addInterceptor { chain ->
             val request = chain.request()
             val url = request.url
-            
+
             if (url.host.contains("lrclib.net") || url.host.contains("storage-ct")) {
                 val newUrl = url.newBuilder()
                     .host("storage-charlie.cuutruyen.net")
