@@ -1,7 +1,0 @@
-ext {
-    extName = 'FAKKU'
-    extClass = '.Fakku'
-    extVersionCode = 3
-}
-
-apply from: "$rootDir/common.gradle"

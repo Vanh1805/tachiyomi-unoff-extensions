@@ -10,3 +10,6 @@ repo/
 apk/
 gen
 generated-src/
+android-sdk/
+*.jks
+key_base64.txt
